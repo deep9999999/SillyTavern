@@ -1,3 +1,14 @@
+/**
+ * 这个模块负责处理世界信息（World Info）的相关功能。
+ * 它包括获取全局世界信息条目、获取聊天的世界信息条目、排序世界信息条目等功能。
+ * 主要函数包括：
+ * - getGlobalLore: 获取全局的世界信息条目。
+ * - getChatLore: 获取聊天的世界信息条目。
+ * - getSortedEntries: 获取排序后的世界信息条目。
+ * 该模块还处理世界信息的事件监听和命令注册。
+ */
+
+
 import { saveSettings, callPopup, substituteParams, getRequestHeaders, chat_metadata, this_chid, characters, saveCharacterDebounced, menu_type, eventSource, event_types, getExtensionPromptByName, saveMetadata, getCurrentChatId, extension_prompt_roles } from '../script.js';
 import { download, debounce, initScrollHeight, resetScrollHeight, parseJsonFile, extractDataFromPng, getFileBuffer, getCharaFilename, getSortableDelay, escapeRegex, PAGINATION_TEMPLATE, navigation_option, waitUntilCondition, isTrueBoolean, setValueByPath, flashHighlight, select2ModifyOptions, getSelect2OptionId, dynamicSelect2DataViaAjax, highlightRegex, select2ChoiceClickSubscribe, isFalseBoolean, getSanitizedFilename, checkOverwriteExistingData, getStringHash, parseStringArray, cancelDebounce } from './utils.js';
 import { extension_settings, getContext } from './extensions.js';
@@ -3512,6 +3523,13 @@ export async function createNewWorldInfo(worldName, { interactive = false } = {}
     return true;
 }
 
+/**
+ * 获取角色的背景故事信息。
+ *
+ * 该函数会根据角色的设定，查找并返回相关的世界信息条目。
+ *
+ * @returns {Promise<Array>} - 返回包含角色背景故事信息的数组
+ */
 async function getCharacterLore() {
     const character = characters[this_chid];
     const name = character?.name;
@@ -3559,6 +3577,16 @@ async function getCharacterLore() {
     return entries;
 }
 
+/**
+ * 获取全局的世界信息条目
+ *
+ * 这个异步函数会遍历所有选中的世界信息，并加载它们的条目。
+ * 它首先检查是否有选中的世界信息，如果没有则返回空数组。
+ * 然后，它会遍历每一个选中的世界信息，加载其条目，并将这些条目添加到一个数组中。
+ * 最后，它会返回包含所有条目的数组。
+ *
+ * @returns {Promise<Array>} 返回一个包含全局世界信息条目的Promise数组
+ */
 async function getGlobalLore() {
     if (!selected_world_info?.length) {
         return [];
@@ -3576,6 +3604,16 @@ async function getGlobalLore() {
     return entries;
 }
 
+/**
+ * 获取聊天的世界信息条目
+ *
+ * 这个异步函数会从聊天元数据中获取当前聊天的世界信息条目。
+ * 它首先检查聊天元数据中是否存在世界信息，如果不存在则返回空数组。
+ * 然后，它会检查该世界信息是否已经在全局世界信息中激活，如果是则跳过。
+ * 最后，它会加载该世界的信息条目，并返回这些条目。
+ *
+ * @returns {Promise<Array>} 返回一个包含聊天世界信息条目的Promise数组
+ */
 async function getChatLore() {
     const chatWorld = chat_metadata[METADATA_KEY];
 
@@ -3596,6 +3634,21 @@ async function getChatLore() {
     return entries;
 }
 
+/**
+ * 获取排序后的世界信息条目
+ *
+ * 这个异步函数会获取全局、角色和聊天的世界信息条目，并根据指定的策略对它们进行排序。
+ * 首先，它会调用getGlobalLore()、getCharacterLore()和getChatLore()函数分别获取全局、角色和聊天的世界信息条目。
+ * 然后，根据world_info_character_strategy的值选择不同的排序策略：
+ * - 如果策略是evenly，则全局和角色条目会混合在一起排序。
+ * - 如果策略是character_first，则角色条目会优先排序，然后是全局条目。
+ * - 如果策略是global_first，则全局条目会优先排序，然后是角色条目。
+ * 最后，聊天条目总是排在最前面。
+ * 在排序之后，函数会计算每个条目的哈希值，并解析装饰器。
+ * 最终返回深度克隆的排序条目数组。
+ *
+ * @returns {Promise<Array>} 返回一个包含排序后世界信息条目的Promise数组
+ */
 export async function getSortedEntries() {
     try {
         const globalLore = await getGlobalLore();
@@ -3700,7 +3753,7 @@ function parseDecorators(content) {
 }
 
 /**
- * Performs a scan on the chat and returns the world info activated.
+ * 执行聊天扫描并返回激活的世界信息。
  * @param {string[]} chat The chat messages to scan, in reverse order.
  * @param {number} maxContext The maximum context size of the generation.
  * @param {boolean} isDryRun Whether to perform a dry run.

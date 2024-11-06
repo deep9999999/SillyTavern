@@ -411,9 +411,9 @@ async function validateReverseProxy() {
 }
 
 /**
- * Formats chat messages into chat completion messages.
- * @param {object[]} chat - Array containing all messages.
- * @returns {object[]} - Array containing all messages formatted for chat completion.
+ * 将聊天消息格式化为聊天完成消息。
+ * @param {object[]} chat - 包含所有消息的数组。
+ * @returns {object[]} - 包含所有已格式化用于聊天完成的消息的数组。
  */
 function setOpenAIMessages(chat) {
     let j = 0;

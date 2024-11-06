@@ -1,5 +1,20 @@
+/**
+ * 该文件主要负责应用程序的初始化和设置，包括：
+ * 1. 导入各种模块和库，以支持不同的功能。
+ * 2. 配置通知库（toastr），以便在用户界面中显示消息。
+ * 3. 处理DOM元素的安全性，确保在插入HTML时不会引入潜在的安全风险。
+ * 4. 处理世界信息的相关功能，包括获取和设置世界信息。
+ * 5. 提供生成文本和流式生成的功能，支持与不同的生成引擎进行交互。
+ * 6. 处理用户设置和状态的保存与加载。
+ * 7. 允许扩展功能的加载和管理。
+ */
+
+
+// 导入RossAscends-mods模块中的功能
 import { humanizedDateTime, favsToHotswap, getMessageTimeStamp, dragElement, isMobile, initRossMods, shouldSendOnEnter } from './scripts/RossAscends-mods.js';
+// 导入统计相关的功能
 import { userStatsHandler, statMesProcess, initStats } from './scripts/stats.js';
+// 导入Kobold设置和生成相关的功能
 import {
     generateKoboldWithStreaming,
     kai_settings,
@@ -10,6 +25,7 @@ import {
     setKoboldFlags,
 } from './scripts/kai-settings.js';
 
+// 导入文本生成设置相关的功能
 import {
     textgenerationwebui_settings as textgen_settings,
     loadTextGenSettings,
@@ -22,8 +38,10 @@ import {
     parseTabbyLogprobs,
 } from './scripts/textgen-settings.js';
 
+// 解构文本生成类型
 const { MANCER, TOGETHERAI, OOBA, VLLM, APHRODITE, TABBY, OLLAMA, INFERMATICAI, DREAMGEN, OPENROUTER, FEATHERLESS } = textgen_types;
 
+// 导入世界信息相关的功能
 import {
     world_info,
     getWorldInfoPrompt,
@@ -38,6 +56,7 @@ import {
     world_info_include_names,
 } from './scripts/world-info.js';
 
+// 导入群组聊天相关的功能
 import {
     groups,
     selected_group,
@@ -64,6 +83,7 @@ import {
     getGroupDepthPrompts,
 } from './scripts/group-chats.js';
 
+// 导入增强用户体验的功能
 import {
     collapseNewlines,
     loadPowerUserSettings,
@@ -86,6 +106,7 @@ import {
     switchSwipeNumAllMessages,
 } from './scripts/power-user.js';
 
+// 导入OpenAI相关的功能
 import {
     setOpenAIMessageExamples,
     setOpenAIMessages,
@@ -103,6 +124,7 @@ import {
     initOpenAI,
 } from './scripts/openai.js';
 
+// 导入小说生成相关的功能
 import {
     generateNovelWithStreaming,
     getNovelGenerationData,
@@ -116,12 +138,14 @@ import {
     parseNovelAILogprobs,
 } from './scripts/nai-settings.js';
 
+// 导入书签相关的功能
 import {
     initBookmarks,
     showBookmarksButtons,
     updateBookmarkDisplay,
 } from './scripts/bookmarks.js';
 
+// 导入Horde相关的功能
 import {
     horde_settings,
     loadHordeSettings,
@@ -132,6 +156,7 @@ import {
     MIN_LENGTH,
 } from './scripts/horde.js';
 
+// 导入实用工具函数
 import {
     debounce,
     delay,
@@ -159,8 +184,12 @@ import {
 } from './scripts/utils.js';
 import { debounce_timeout } from './scripts/constants.js';
 
+// 导入扩展相关的功能
 import { ModuleWorkerWrapper, doDailyExtensionUpdatesCheck, extension_settings, getContext, initExtensions, loadExtensionSettings, renderExtensionTemplate, renderExtensionTemplateAsync, runGenerationInterceptors, saveMetadataDebounced, writeExtensionField } from './scripts/extensions.js';
+// 导入斜杠命令相关的功能
 import { COMMENT_NAME_DEFAULT, executeSlashCommands, executeSlashCommandsOnChatInput, executeSlashCommandsWithOptions, getSlashCommandsHelp, initDefaultSlashCommands, isExecutingCommandsFromChatInput, pauseScriptExecution, processChatSlashCommands, registerSlashCommand, stopScriptExecution } from './scripts/slash-commands.js';
+
+// 导入标签相关的功能
 import {
     tag_map,
     tags,
@@ -183,21 +212,34 @@ import {
     applyTagsOnGroupSelect,
     tag_import_setting,
 } from './scripts/tags.js';
+
+// 导入秘密相关的功能
 import {
     SECRET_KEYS,
     readSecretState,
     secret_state,
     writeSecret,
 } from './scripts/secrets.js';
+
+// 导入事件发射器
 import { EventEmitter } from './lib/eventemitter.js';
+// 导入Markdown排除相关的功能
 import { markdownExclusionExt } from './scripts/showdown-exclusion.js';
+// 导入Markdown下划线相关的功能
 import { markdownUnderscoreExt } from './scripts/showdown-underscore.js';
+// 导入作者注释相关的功能
 import { NOTE_MODULE_NAME, initAuthorsNote, metadata_keys, setFloatingPrompt, shouldWIAddPrompt } from './scripts/authors-note.js';
+// 导入提示管理器相关的功能
 import { registerPromptManagerMigration } from './scripts/PromptManager.js';
+// 导入正则表达式引擎相关的功能
 import { getRegexedString, regex_placement } from './scripts/extensions/regex/engine.js';
+// 导入日志概率相关的功能
 import { initLogprobs, saveLogprobsForActiveMessage } from './scripts/logprobs.js';
+// 导入过滤器相关的功能
 import { FILTER_STATES, FILTER_TYPES, FilterHelper, isFilterState } from './scripts/filters.js';
+// 导入CFG相关的功能
 import { getCfgPrompt, getGuidanceScale, initCfg } from './scripts/cfg-scale.js';
+// 导入指令模式相关的功能
 import {
     force_output_sequence,
     formatInstructModeChat,
@@ -210,8 +252,11 @@ import {
     instruct_presets,
     selectContextPreset,
 } from './scripts/instruct-mode.js';
+// 导入国际化相关的功能
 import { initLocales, t, translate } from './scripts/i18n.js';
+// 导入分词器相关的功能
 import { getFriendlyTokenizerName, getTokenCount, getTokenCountAsync, getTokenizerModel, initTokenizers, saveTokenCache, TOKENIZER_SUPPORTED_KEY } from './scripts/tokenizers.js';
+// 导入用户头像相关的功能
 import {
     user_avatar,
     getUserAvatars,
@@ -221,32 +266,59 @@ import {
     setPersonaDescription,
     initUserAvatar,
 } from './scripts/personas.js';
+// 导入背景相关的功能
 import { getBackgrounds, initBackgrounds, loadBackgroundSettings, background_settings } from './scripts/backgrounds.js';
+// 导入加载器相关的功能
 import { hideLoader, showLoader } from './scripts/loader.js';
+// 导入批量编辑和角色上下文菜单相关的功能
 import { BulkEditOverlay, CharacterContextMenu } from './scripts/BulkEditOverlay.js';
+// 导入文本生成模型相关的功能
 import { loadFeatherlessModels, loadMancerModels, loadOllamaModels, loadTogetherAIModels, loadInfermaticAIModels, loadOpenRouterModels, loadVllmModels, loadAphroditeModels, loadDreamGenModels, initTextGenModels, loadTabbyModels } from './scripts/textgen-models.js';
+// 导入聊天相关的功能
 import { appendFileContent, hasPendingFileAttachment, populateFileAttachment, decodeStyleTags, encodeStyleTags, isExternalMediaAllowed, getCurrentEntityId, preserveNeutralChat, restoreNeutralChat } from './scripts/chats.js';
+// 导入预设管理器相关的功能
 import { initPresetManager } from './scripts/preset-manager.js';
+// 导入宏相关的功能
 import { MacrosParser, evaluateMacros, getLastMessageId } from './scripts/macros.js';
+// 导入用户相关的功能
 import { currentUser, setUserControls } from './scripts/user.js';
+// 导入弹出窗口相关的功能
 import { POPUP_RESULT, POPUP_TYPE, Popup, callGenericPopup, fixToastrForDialogs } from './scripts/popup.js';
+// 导入模板相关的功能
 import { renderTemplate, renderTemplateAsync } from './scripts/templates.js';
+// 导入抓取器相关的功能
 import { initScrapers, ScraperManager } from './scripts/scrapers.js';
+// 导入斜杠命令解析器相关的功能
 import { SlashCommandParser } from './scripts/slash-commands/SlashCommandParser.js';
+// 导入斜杠命令相关的功能
 import { SlashCommand } from './scripts/slash-commands/SlashCommand.js';
+// 导入斜杠命令参数相关的功能
 import { ARGUMENT_TYPE, SlashCommandArgument, SlashCommandNamedArgument } from './scripts/slash-commands/SlashCommandArgument.js';
+// 导入斜杠命令浏览器相关的功能
 import { SlashCommandBrowser } from './scripts/slash-commands/SlashCommandBrowser.js';
+// 导入自定义采样器相关的功能
 import { initCustomSelectedSamplers, validateDisabledSamplers } from './scripts/samplerSelect.js';
+// 导入拖放处理器相关的功能
 import { DragAndDropHandler } from './scripts/dragdrop.js';
+// 导入键盘相关的功能
 import { INTERACTABLE_CONTROL_CLASS, initKeyboard } from './scripts/keyboard.js';
+// 导入动态样式相关的功能
 import { initDynamicStyles } from './scripts/dynamic-styles.js';
+// 导入斜杠命令枚举值相关的功能
 import { SlashCommandEnumValue, enumTypes } from './scripts/slash-commands/SlashCommandEnumValue.js';
+// 导入公共枚举提供者相关的功能
 import { commonEnumProviders, enumIcons } from './scripts/slash-commands/SlashCommandCommonEnumsProvider.js';
+// 导入Markdown输入格式化相关的功能
 import { initInputMarkdown } from './scripts/input-md-formatting.js';
+// 导入中止原因相关的功能
 import { AbortReason } from './scripts/util/AbortReason.js';
+// 导入系统提示相关的功能
 import { initSystemPrompts } from './scripts/sysprompt.js';
+// 导入扩展斜杠命令注册相关的功能
 import { registerExtensionSlashCommands as initExtensionSlashCommands } from './scripts/extensions-slashcommands.js';
+// 导入工具调用相关的功能
 import { ToolManager } from './scripts/tool-calling.js';
+// 导入浏览器修复相关的功能
 import { applyBrowserFixes } from './scripts/browser-fixes.js';
 
 //exporting functions and vars for mods
@@ -286,6 +358,9 @@ toastr.options.onHidden = () => {
     // so the toasts still show up inside there.
     fixToastrForDialogs();
 };
+
+
+
 
 // Allow target="_blank" in links
 DOMPurify.addHook('afterSanitizeAttributes', function (node) {
@@ -494,7 +569,7 @@ let converter;
 reloadMarkdownProcessor();
 
 // array for prompt token calculations
-console.debug('initializing Prompt Itemization Array on Startup');
+console.debug('正在初始化提示项数组');
 const promptStorage = new localforage.createInstance({ name: 'SillyTavern_Prompts' });
 export let itemizedPrompts = [];
 
@@ -503,7 +578,10 @@ export const neutralCharacterName = 'Assistant';
 let default_user_name = 'User';
 export let name1 = default_user_name;
 export let name2 = systemUserName;
+ // Start of Selection
+// 聊天记录数组
 export let chat = [];
+// 聊天保存超时
 let chatSaveTimeout;
 let importFlashTimeout;
 export let isChatSaving = false;
@@ -583,17 +661,20 @@ export const system_message_types = {
 };
 
 /**
- * @enum {number} Extension prompt types
+ * @enum {number} 扩展提示类型
+ */
+/**
+ * 扩展提示词类型的枚举
  */
 export const extension_prompt_types = {
-    NONE: -1,
-    IN_PROMPT: 0,
-    IN_CHAT: 1,
-    BEFORE_PROMPT: 2,
+    NONE: -1,         // 不使用任何提示词
+    IN_PROMPT: 0,     // 提示词插入到主提示中
+    IN_CHAT: 1,       // 提示词插入到聊天消息中
+    BEFORE_PROMPT: 2, // 提示词插入到主提示之前
 };
 
 /**
- * @enum {number} Extension prompt roles
+ * @enum {number} 扩展提示角色
  */
 export const extension_prompt_roles = {
     SYSTEM: 0,
@@ -601,8 +682,11 @@ export const extension_prompt_roles = {
     ASSISTANT: 2,
 };
 
+// 最大注入深度
 export const MAX_INJECTION_DEPTH = 1000;
 
+// SAFETY_CHAT 是一个包含系统消息的数组，用于在用户删除角色或聊天后提供安全提示。
+// 该数组中的消息提醒用户选择另一个角色以确保安全。
 const SAFETY_CHAT = [
     {
         name: systemUserName,
@@ -796,11 +880,16 @@ export function getCurrentChatId() {
     }
 }
 
+// 默认的谈话活跃度
 export const talkativeness_default = 0.5;
+// 默认的深度提示深度
 export const depth_prompt_depth_default = 4;
+// 默认的深度提示角色
 export const depth_prompt_role_default = 'system';
+// 每页默认数量
 const per_page_default = 50;
 
+// 是否打开高级角色设置
 var is_advanced_char_open = false;
 
 /**
@@ -817,6 +906,8 @@ export let menu_type = '';
 export let selected_button = ''; //which button pressed
 
 //create pole save
+// 创建一个用于保存角色的对象
+// 该对象包含角色的各种属性，如名称、描述、个性等
 let create_save = {
     name: '',
     description: '',
@@ -928,53 +1019,93 @@ export async function pingServer() {
     }
 }
 
+// 初始化第一次加载
 async function firstLoadInit() {
+    // 尝试获取CSRF令牌
     try {
-        const tokenResponse = await fetch('/csrf-token');
-        const tokenData = await tokenResponse.json();
-        token = tokenData.token;
+        const tokenResponse = await fetch('/csrf-token'); // 发送请求以获取CSRF令牌
+        const tokenData = await tokenResponse.json(); // 解析响应为JSON格式
+        token = tokenData.token; // 将获取的令牌赋值给token变量
     } catch {
-        hideLoader();
+        hideLoader(); // 隐藏加载指示器
+        // 显示错误消息，提示用户刷新页面
         toastr.error(t`Couldn't get CSRF token. Please refresh the page.`, t`Error`, { timeOut: 0, extendedTimeOut: 0, preventDuplicates: true });
-        throw new Error('Initialization failed');
+        throw new Error('Initialization failed'); // 抛出初始化失败的错误
     }
 
+    // 应用浏览器修复
     applyBrowserFixes();
+    // 获取客户端版本
     await getClientVersion();
+    // 读取秘密状态
     await readSecretState();
+    // 初始化本地化设置
     await initLocales();
+    // 初始化默认斜杠命令
     initDefaultSlashCommands();
+    // 初始化文本生成模型
     initTextGenModels();
+    // 初始化OpenAI
     initOpenAI();
+    // 初始化系统提示
     initSystemPrompts();
+    // 初始化扩展
     initExtensions();
+    // 初始化扩展斜杠命令
     initExtensionSlashCommands();
+    // 初始化工具斜杠命令
     ToolManager.initToolSlashCommands();
+    // 初始化预设管理器
     await initPresetManager();
+    // 获取系统消息
     await getSystemMessages();
+    // 发送欢迎系统消息
     sendSystemMessage(system_message_types.WELCOME);
+    // 发送欢迎提示消息
     sendSystemMessage(system_message_types.WELCOME_PROMPT);
+    // 获取设置
     await getSettings();
+    // 初始化键盘事件
     initKeyboard();
+    // 初始化动态样式
     initDynamicStyles();
+    // 初始化标签
     initTags();
+    // 初始化书签
     initBookmarks();
+    // 获取用户头像
     await getUserAvatars(true, user_avatar);
+    // 获取角色
     await getCharacters();
+    // 获取背景
     await getBackgrounds();
+    // 初始化分词器
     await initTokenizers();
+    // 初始化背景
     initBackgrounds();
+    // 初始化作者注释
     initAuthorsNote();
+    // 初始化角色
     initPersonas();
+    // 初始化RossMods
     initRossMods();
+    // 初始化统计信息
     initStats();
+    // 初始化配置
     initCfg();
+    // 初始化日志概率
     initLogprobs();
+    // 初始化输入Markdown
     initInputMarkdown();
+    // 初始化抓取器
     await initScrapers();
+    // 执行每日扩展更新检查
     doDailyExtensionUpdatesCheck();
+    // 隐藏加载指示器
     await hideLoader();
+    // 修复视口
     await fixViewport();
+    // 触发应用准备事件
     await eventSource.emit(event_types.APP_READY);
 }
 
@@ -1077,8 +1208,8 @@ export async function replaceItemizedPromptText(mesId, promptText) {
 }
 
 /**
- * Deletes the itemized prompts for a chat.
- * @param {string} chatId Chat ID to delete itemized prompts for
+ * 删除聊天的逐项提示。
+ * @param {string} chatId 要删除逐项提示的聊天ID
  */
 export async function deleteItemizedPrompts(chatId) {
     try {
@@ -1901,6 +2032,7 @@ export async function sendTextareaMessage() {
     // "Continue on send" is activated when the user hits "send" (or presses enter) on an empty chat box, and the last
     // message was sent from a character (not the user or the system).
     const textareaText = String($('#send_textarea').val());
+    // 如果用户启用了“发送时继续”功能，并且没有待处理的文件附件，文本框为空，未选择任何组，聊天记录中有内容，并且最后一条消息既不是用户发送的也不是系统发送的，则设置生成类型为“继续”。
     if (power_user.continue_on_send &&
         !hasPendingFileAttachment() &&
         !textareaText &&
@@ -2522,15 +2654,15 @@ export function substituteParamsExtended(content, additionalMacro = {}) {
 }
 
 /**
- * Substitutes {{macro}} parameters in a string.
- * @param {string} content - The string to substitute parameters in.
- * @param {string} [_name1] - The name of the user. Uses global name1 if not provided.
- * @param {string} [_name2] - The name of the character. Uses global name2 if not provided.
- * @param {string} [_original] - The original message for {{original}} substitution.
- * @param {string} [_group] - The group members list for {{group}} substitution.
- * @param {boolean} [_replaceCharacterCard] - Whether to replace character card macros.
- * @param {Record<string,any>} [additionalMacro] - Additional environment variables for substitution.
- * @returns {string} The string with substituted parameters.
+ * 该函数用于在字符串中替换{{macro}}参数。
+ * @param {string} content - 需要替换参数的字符串。
+ * @param {string} [_name1] - 用户的名称。如果未提供，则使用全局的name1。
+ * @param {string} [_name2] - 角色的名称。如果未提供，则使用全局的name2。
+ * @param {string} [_original] - 原始消息，用于{{original}}替换。
+ * @param {string} [_group] - 群组成员列表，用于{{group}}替换。
+ * @param {boolean} [_replaceCharacterCard] - 是否替换角色卡片宏。
+ * @param {Record<string,any>} [additionalMacro] - 额外的环境变量，用于替换。
+ * @returns {string} 返回替换参数后的字符串。
  */
 export function substituteParams(content, _name1, _name2, _original, _group, _replaceCharacterCard = true, additionalMacro = {}) {
     if (!content) {
@@ -2687,6 +2819,16 @@ export async function processCommands(message) {
     return true;
 }
 
+
+
+/**
+ * 发送系统消息
+ * 系统消息是由系统自动发送的消息,用于显示系统状态、帮助信息、欢迎语等
+ * 不同于用户或AI角色发送的普通消息
+ * @param {string} type 系统消息类型，来自 system_message_types 枚举
+ * @param {string} text 消息文本内容
+ * @param {object} extra 额外的消息属性，默认为空对象
+ */
 export function sendSystemMessage(type, text, extra = {}) {
     const systemMessage = system_messages[type];
 
@@ -2725,9 +2867,12 @@ export function sendSystemMessage(type, text, extra = {}) {
 }
 
 /**
- * Extracts the contents of bias macros from a message.
- * @param {string} message Message text
- * @returns {string} Message bias extracted from the message (or an empty string if not found)
+ * 从消息中提取偏见宏的内容。
+ * @param {string} message 消息文本
+ * @returns {string} 从消息中提取的偏见（如果未找到则返回空字符串）
+ *
+ * 该函数使用 Handlebars 模板引擎来解析消息文本，并查找其中的偏见宏。
+ * 如果找到偏见宏，则将其内容提取并返回；否则返回空字符串。
  */
 export function extractMessageBias(message) {
     if (!message) {
@@ -2792,6 +2937,10 @@ function cleanGroupMessage(getMessage) {
     return getMessage;
 }
 
+/**
+ * 添加人物描述扩展提示词
+ * 处理人物描述的位置和注入
+ */
 function addPersonaDescriptionExtensionPrompt() {
     const INJECT_TAG = 'PERSONA_DESCRIPTION';
     setExtensionPrompt(INJECT_TAG, '', extension_prompt_types.IN_PROMPT, 0);
@@ -2836,14 +2985,14 @@ export function getExtensionPromptByName(moduleName) {
 }
 
 /**
- * Returns the extension prompt for the given position, depth, and role.
- * If multiple prompts are found, they are joined with a separator.
- * @param {number} [position] Position of the prompt
- * @param {number} [depth] Depth of the prompt
- * @param {string} [separator] Separator for joining multiple prompts
- * @param {number} [role] Role of the prompt
- * @param {boolean} [wrap] Wrap start and end with a separator
- * @returns {string} Extension prompt
+ * 根据给定的位置、深度和角色返回扩展提示词。
+ * 如果找到多个提示词,它们将用分隔符连接。
+ * @param {number} [position] 提示词的位置
+ * @param {number} [depth] 提示词的深度
+ * @param {string} [separator] 连接多个提示词的分隔符
+ * @param {number} [role] 提示词的角色
+ * @param {boolean} [wrap] 是否用分隔符包裹开始和结束
+ * @returns {string} 扩展提示词
  */
 export function getExtensionPrompt(position = extension_prompt_types.IN_PROMPT, depth = undefined, separator = '\n', role = undefined, wrap = true) {
     let extension_prompt = Object.keys(extension_prompts)
@@ -2866,6 +3015,13 @@ export function getExtensionPrompt(position = extension_prompt_types.IN_PROMPT, 
     return extension_prompt;
 }
 
+/**
+ * 替换聊天文本中的基本参数
+ * @param {string} value - 需要替换参数的原始文本
+ * @param {string} name1 - 用户名称
+ * @param {string} name2 - AI角色名称
+ * @returns {string} 替换参数后的文本
+ */
 export function baseChatReplace(value, name1, name2) {
     if (value !== undefined && value.length > 0) {
         const _ = undefined;
@@ -2881,8 +3037,8 @@ export function baseChatReplace(value, name1, name2) {
 }
 
 /**
- * Returns the character card fields for the current character.
- * @returns {{system: string, mesExamples: string, description: string, personality: string, persona: string, scenario: string, jailbreak: string, version: string}}
+ * 返回当前角色的角色卡片字段。
+ * @returns {{system: string, mesExamples: string, description: string, personality: string, persona: string, scenario: string, jailbreak: string, version: string}} 包含角色卡片各个字段的对象
  */
 export function getCharacterCardFields() {
     const result = { system: '', mesExamples: '', description: '', personality: '', persona: '', scenario: '', jailbreak: '', version: '' };
@@ -3409,19 +3565,38 @@ function removeLastMessage() {
 }
 
 /**
- * Runs a generation using the current chat context.
- * @param {string} type Generation type
- * @param {GenerateOptions} options Generation options
- * @param {boolean} dryRun Whether to actually generate a message or just assemble the prompt
- * @returns {Promise<any>} Returns a promise that resolves when the text is done generating.
+ * 使用当前聊天上下文运行生成
+ * @param {string} type 生成类型:
+ * - 'normal': 普通生成,用于正常的对话生成
+ * - 'impersonate': 模仿生成,用于模仿其他角色的语气和风格
+ * - 'regenerate': 重新生成,用于重新生成上一条消息
+ * - 'swipe': 滑动生成,用于生成多个候选回复供用户选择
+ * - 'quiet': 静默生成,不显示生成过程,用于后台生成内容
+ * - 'continue': 继续生成,用于继续未完成的句子
+ * - 'stop': 停止生成,用于中断当前生成过程
+ * @param {GenerateOptions} options 生成选项,包含以下可选参数:
+ * - automatic_trigger: 是否自动触发生成
+ * - force_name2: 是否强制使用name2（即第二个角色的名称）
+ * - quiet_prompt: 静默生成时使用的提示文本
+ * - quietToLoud: 是否从静默转为正常生成
+ * - skipWIAN: 是否跳过WI/AN(World Info/Author's Note)处理。当设置为true时,生成过程会忽略世界信息和作者注释的处理步骤。这通常用于需要快速生成且不需要这些额外上下文的场景。
+ * - force_chid: 强制使用的角色ID
+ * - signal: 用于中止生成的AbortSignal
+ * - quietImage: 静默生成时使用的图片
+ * - quietName: 静默生成时使用的名称
+ * - depth: 生成深度,默认为0
+ * @param {boolean} dryRun 是否只组装提示而不实际生成消息
+ * @returns {Promise<any>} 返回一个Promise,在文本生成完成时resolve
  * @typedef {{automatic_trigger?: boolean, force_name2?: boolean, quiet_prompt?: string, quietToLoud?: boolean, skipWIAN?: boolean, force_chid?: number, signal?: AbortSignal, quietImage?: string, quietName?: string, depth?: number }} GenerateOptions
  */
+
+
 export async function Generate(type, { automatic_trigger, force_name2, quiet_prompt, quietToLoud, skipWIAN, force_chid, signal, quietImage, quietName, depth = 0 } = {}, dryRun = false) {
     console.log('Generate entered');
     setGenerationProgress(0);
     generation_started = new Date();
 
-    // Occurs every time, even if the generation is aborted due to slash commands execution
+    // 每次都会发生，即使生成因斜杠命令执行而中止
     await eventSource.emit(event_types.GENERATION_STARTED, type, { automatic_trigger, force_name2, quiet_prompt, quietToLoud, skipWIAN, force_chid, signal, quietImage }, dryRun);
 
     // Don't recreate abort controller if signal is passed
@@ -3430,6 +3605,12 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // OpenAI doesn't need instruct mode. Use OAI main prompt instead.
+    /**
+     * instruct mode 是一种生成模式，允许用户以特定的方式与模型进行交互。
+     * 在此模式下，用户可以提供更详细的指示，以便模型生成更符合预期的响应。
+     * 例如，用户可以要求模型模仿某个角色的语气或风格，或者在生成内容时遵循特定的主题或格式。
+     * 这种模式通常用于需要更高控制度和定制化的场景。
+     */
     const isInstruct = power_user.instruct.enabled && main_api !== 'openai';
     const isImpersonate = type == 'impersonate';
 
@@ -3444,6 +3625,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // Occurs only if the generation is not aborted due to slash commands execution
+    // 仅在生成未因斜杠命令执行而中止时发生
     await eventSource.emit(event_types.GENERATION_AFTER_COMMANDS, type, { automatic_trigger, force_name2, quiet_prompt, quietToLoud, skipWIAN, force_chid, signal, quietImage }, dryRun);
 
     if (main_api == 'kobold' && kai_settings.streaming_kobold && !kai_flags.can_use_streaming) {
@@ -3470,6 +3652,8 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
         // Hide swipes if not in a dry run.
         hideSwipeButtons();
         // If generated any message, set the flag to indicate it can't be recreated again.
+        // 如果生成了任何消息，设置标志以指示它无法再次被重建。
+        // 这个标记表示聊天元数据已被修改，不能再被重建。
         chat_metadata['tainted'] = true;
     }
 
@@ -3505,6 +3689,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
 
     //#########QUIET PROMPT STUFF##############
     //this function just gives special care to novel quiet instruction prompts
+    // 这个函数特别处理小说的安静指令提示
     if (quiet_prompt) {
         quiet_prompt = substituteParams(quiet_prompt);
         quiet_prompt = main_api == 'novel' && !quietToLoud ? adjustNovelInstructionPrompt(quiet_prompt) : quiet_prompt;
@@ -3514,6 +3699,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
 
     // We can't do anything because we're not in a chat right now. (Unless it's a dry run, in which case we need to
     // assemble the prompt so we can count its tokens regardless of whether a chat is active.)
+    // 目前我们无法执行任何操作，因为我们不在聊天中。（除非是干运行，在这种情况下我们需要组装提示，以便无论聊天是否处于活动状态，我们都可以计算其令牌。）
     if (!dryRun && !hasBackendConnection) {
         is_send_press = false;
         return Promise.resolve();
@@ -3539,6 +3725,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     const isContinue = type == 'continue';
 
     // Rewrite the generation timer to account for the time passed for all the continuations.
+    // 重写生成计时器以考虑所有续写所经过的时间。
     if (isContinue && chat.length) {
         const prevFinished = chat[chat.length - 1]['gen_finished'];
         const prevStarted = chat[chat.length - 1]['gen_started'];
@@ -3554,6 +3741,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
         deactivateSendButtons();
     }
 
+    // 该行代码调用 getBiasStrings 函数，传入 textareaText 和 type 参数，返回三个值：messageBias、promptBias 和 isUserPromptBias。这些值用于获取与用户输入的文本相关的偏见字符串。
     let { messageBias, promptBias, isUserPromptBias } = getBiasStrings(textareaText, type);
 
     //*********************************
@@ -3561,6 +3749,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     //*********************************
 
     // These generation types should not attach pending files to the chat
+    // 这些生成类型不应将待处理文件附加到聊天中
     const noAttachTypes = [
         'regenerate',
         'swipe',
@@ -3572,6 +3761,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     //for normal messages sent from user..
     if ((textareaText != '' || (hasPendingFileAttachment() && !noAttachTypes.includes(type))) && !automatic_trigger && type !== 'quiet' && !dryRun) {
         // If user message contains no text other than bias - send as a system message
+        // 如果用户消息除了偏见之外没有其他文本 - 作为系统消息发送
         if (messageBias && !removeMacros(textareaText)) {
             sendSystemMessage(system_message_types.GENERIC, ' ', { bias: messageBias });
         }
@@ -3614,18 +3804,23 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
             setExtensionPrompt('DEPTH_PROMPT_' + index, value.text, extension_prompt_types.IN_CHAT, value.depth, extension_settings.note.allowWIScan, role);
         });
     } else {
+        // 提取角色特定的深度提示文本、深度和角色
         const depthPromptText = baseChatReplace(characters[this_chid]?.data?.extensions?.depth_prompt?.prompt?.trim(), name1, name2) || '';
         const depthPromptDepth = characters[this_chid]?.data?.extensions?.depth_prompt?.depth ?? depth_prompt_depth_default;
         const depthPromptRole = getExtensionPromptRoleByName(characters[this_chid]?.data?.extensions?.depth_prompt?.role ?? depth_prompt_role_default);
+
+        // 设置深度提示
         setExtensionPrompt('DEPTH_PROMPT', depthPromptText, extension_prompt_types.IN_CHAT, depthPromptDepth, extension_settings.note.allowWIScan, depthPromptRole);
     }
 
     // First message in fresh 1-on-1 chat reacts to user/character settings changes
+    // 在新的一对一聊天中的第一条消息会响应用户/角色设置的变化
     if (chat.length) {
         chat[0].mes = substituteParams(chat[0].mes);
     }
 
     // Collect messages with usable content
+    // 收集包含可用内容的消息
     const canUseTools = ToolManager.isToolCallingSupported();
     const canPerformToolCalls = !dryRun && ToolManager.canPerformToolCalls(type) && depth < ToolManager.RECURSE_LIMIT;
     let coreChat = chat.filter(x => !x.is_system || (canUseTools && Array.isArray(x.extra?.tool_invocations)));
@@ -3686,6 +3881,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     console.log(`Core/all messages: ${coreChat.length}/${chat.length}`);
 
     // kingbri MARK: - Make sure the prompt bias isn't the same as the user bias
+    // 确保提示偏置与用户偏置不同
     if ((promptBias && !isUserPromptBias) || power_user.always_force_name2 || main_api == 'novel') {
         force_name2 = true;
     }
@@ -3694,11 +3890,11 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
         force_name2 = false;
     }
 
-    // TODO (kingbri): Migrate to a utility function
+    // TODO (kingbri): 迁移到工具函数
     /**
-     * Parses an examples string.
-     * @param {string} examplesStr
-     * @returns {string[]} Examples array with block heading
+     * 解析示例字符串。
+     * @param {string} examplesStr 示例字符串
+     * @returns {string[]} 带有块标题的示例数组
      */
     function parseMesExamples(examplesStr) {
         if (examplesStr.length === 0 || examplesStr === '<START>') {
@@ -3727,6 +3923,8 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
 
     // Add WI to prompt (and also inject WI to AN value via hijack)
     // Make quiet prompt available for WIAN
+    // 添加世界信息到提示词(同时通过劫持将世界信息注入到作者注释值中)
+    // 使安静提示词可用于世界信息作者注释
     setExtensionPrompt('QUIET_PROMPT', quiet_prompt || '', extension_prompt_types.IN_PROMPT, 0, true);
     const chatForWI = coreChat.map(x => world_info_include_names ? `${x.name}: ${x.mes}` : x.mes).reverse();
     const { worldInfoString, worldInfoBefore, worldInfoAfter, worldInfoExamples, worldInfoDepth } = await getWorldInfoPrompt(chatForWI, this_max_context, dryRun);
@@ -3761,6 +3959,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     if (skipWIAN !== true) {
         console.log('skipWIAN not active, adding WIAN');
         // Add all depth WI entries to prompt
+        // 将所有深度世界信息条目添加到提示词中
         flushWIDepthInjections();
         if (Array.isArray(worldInfoDepth)) {
             worldInfoDepth.forEach((e) => {
@@ -3773,12 +3972,14 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // Inject all Depth prompts. Chat Completion does it separately
+    // 注入所有深度提示词。聊天补全会单独处理
     let injectedIndices = [];
     if (main_api !== 'openai') {
         injectedIndices = doChatInject(coreChat, isContinue);
     }
 
     // Insert character jailbreak as the last user message (if exists, allowed, preferred, and not using Chat Completion)
+    // 将角色越狱提示作为最后一条用户消息插入(如果存在、允许、首选且不使用聊天补全)
     if (power_user.context.allow_jailbreak && power_user.prefer_character_jailbreak && main_api !== 'openai' && jailbreak) {
         // Set "original" explicity to empty string since there's no original
         jailbreak = substituteParams(jailbreak, name1, name2, '');
@@ -3851,6 +4052,18 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     const beforeScenarioAnchor = getExtensionPrompt(extension_prompt_types.BEFORE_PROMPT).trimStart();
     const afterScenarioAnchor = getExtensionPrompt(extension_prompt_types.IN_PROMPT);
 
+    // 这段代码创建了一个对象 storyStringParams,包含了故事生成所需的各种参数:
+    // description - 角色描述
+    // personality - 角色性格
+    // persona - 根据设置决定是否在提示中包含角色人设
+    // scenario - 场景设定
+    // system - 系统设置
+    // char - AI角色名称
+    // user - 用户名称
+    // wiBefore/wiAfter - 世界设定信息(前置/后置)
+    // loreBefore/loreAfter - 同上,是世界设定的别名
+    // mesExamples - 示例对话(拼接成字符串)
+    // mesExamplesRaw - 原始示例对话(拼接成字符串)
     const storyStringParams = {
         description: description,
         personality: personality,
@@ -3870,6 +4083,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     const storyString = renderStoryString(storyStringParams);
 
     // Story string rendered, safe to remove
+    // 故事字符串已渲染,可以安全移除
     if (power_user.strip_examples) {
         mesExamplesArray = [];
     }
@@ -3883,11 +4097,15 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // hack for regeneration of the first message
+    // 用于重新生成第一条消息的临时解决方案
     if (chat2.length == 0) {
         chat2.push('');
     }
 
     let examplesString = '';
+    // 初始化聊天字符串,添加前导文本和分隔符
+    // 调用addChatsPreamble()添加前导文本(如Novel AI的预设文本)
+    // 调用addChatsSeparator()添加分隔符(如自定义的聊天开始标记)
     let chatString = addChatsPreamble(addChatsSeparator(''));
     let cyclePrompt = '';
 
@@ -3906,23 +4124,28 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // Force pinned examples into the context
+    // 强制将固定的示例加入上下文
     let pinExmString;
     if (power_user.pin_examples) {
         pinExmString = examplesString = mesExamplesArray.join('');
     }
 
     // Only add the chat in context if past the greeting message
+    // 仅在超过问候消息后才将聊天添加到上下文中
     if (isContinue && (chat2.length > 1 || main_api === 'openai')) {
         cyclePrompt = chat2.shift();
     }
 
     // Collect enough messages to fill the context
+    // 收集足够的消息以填充上下文
     let arrMes = new Array(chat2.length);
     let tokenCount = await getMessagesTokenCount();
     let lastAddedIndex = -1;
 
     // Pre-allocate all injections first.
     // If it doesn't fit - user shot himself in the foot
+    // 首先预分配所有注入内容
+    // 如果放不下 - 用户自己搬起石头砸自己的脚
     for (const index of injectedIndices) {
         const item = chat2[index];
 
@@ -3968,6 +4191,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // Add user alignment message if last message is not a user message
+    // 如果最后一条消息不是用户消息,则添加用户对齐消息
     const stoppedAtUser = userMessageIndices.includes(lastAddedIndex);
     if (addUserAlignment && !stoppedAtUser) {
         tokenCount += await getTokenCountAsync(userAlignmentMessage.replace(/\r/gm, ''));
@@ -3977,6 +4201,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // Unsparse the array. Adjust injected indices
+    // 取消稀疏数组。调整注入索引
     const newArrMes = [];
     const newInjectedIndices = [];
     for (let i = 0; i < arrMes.length; i++) {
@@ -3996,6 +4221,7 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // Estimate how many unpinned example messages fit in the context
+    // 估计有多少未固定的示例消息适合上下文
     tokenCount = await getMessagesTokenCount();
     let count_exm_add = 0;
     if (!power_user.pin_examples) {
@@ -4191,12 +4417,18 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
     }
 
     // Fetches the combined prompt for both negative and positive prompts
+    // 获取负面和正面提示的组合提示
     const cfgGuidanceScale = getGuidanceScale();
     const useCfgPrompt = cfgGuidanceScale && cfgGuidanceScale.value !== 1;
 
     // For prompt bit itemization
+    // 提示位项目化
     let mesSendString = '';
 
+    /**
+     * 获取组合提示
+     * @param {boolean} isNegative - 是否为负面提示
+     */
     function getCombinedPrompt(isNegative) {
         // Only return if the guidance scale doesn't exist or the value is 1
         // Also don't return if constructing the neutral prompt
@@ -4351,29 +4583,33 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
             break;
         }
         case 'openai': {
+            // 调用 prepareOpenAIMessages 函数准备 OpenAI 消息
+            // 传递的参数包括角色名称、描述、性格、场景、世界信息、扩展提示词、偏见、类型、安静提示、安静图片、循环提示、系统提示覆盖、越狱提示覆盖、角色描述、消息和消息示例
             let [prompt, counts] = await prepareOpenAIMessages({
-                name2: name2,
-                charDescription: description,
-                charPersonality: personality,
-                Scenario: scenario,
-                worldInfoBefore: worldInfoBefore,
-                worldInfoAfter: worldInfoAfter,
-                extensionPrompts: extension_prompts,
-                bias: promptBias,
-                type: type,
-                quietPrompt: quiet_prompt,
-                quietImage: quietImage,
-                cyclePrompt: cyclePrompt,
-                systemPromptOverride: system,
-                jailbreakPromptOverride: jailbreak,
-                personaDescription: persona,
-                messages: oaiMessages,
-                messageExamples: oaiMessageExamples,
+                name2: name2, // 角色名称
+                charDescription: description, // 角色描述
+                charPersonality: personality, // 角色性格
+                Scenario: scenario, // 场景
+                worldInfoBefore: worldInfoBefore, // 世界信息（前）
+                worldInfoAfter: worldInfoAfter, // 世界信息（后）
+                extensionPrompts: extension_prompts, // 扩展提示词
+                bias: promptBias, // 偏见
+                type: type, // 类型
+                quietPrompt: quiet_prompt, // 安静提示
+                quietImage: quietImage, // 安静图片
+                cyclePrompt: cyclePrompt, // 循环提示
+                systemPromptOverride: system, // 系统提示覆盖
+                jailbreakPromptOverride: jailbreak, // 越狱提示覆盖
+                personaDescription: persona, // 角色描述
+                messages: oaiMessages, // 消息
+                messageExamples: oaiMessageExamples, // 消息示例
             }, dryRun);
-            generate_data = { prompt: prompt };
+            generate_data = { prompt: prompt }; // 将生成的数据赋值给 generate_data 对象
 
             // TODO: move these side-effects somewhere else, so this switch-case solely sets generate_data
             // counts will return false if the user has not enabled the token breakdown feature
+            // TODO: 将这些副作用移到其他地方，这样这个 switch-case 只设置 generate_data
+            // 如果用户没有启用令牌分解功能，counts 将返回 false
             if (counts) {
                 parseTokenCounts(counts, thisPromptBits);
             }
@@ -4402,35 +4638,67 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
         showStopButton();
 
         //set array object for prompt token itemization of this message
+        //为此消息设置提示令牌项目化的数组对象
         let currentArrayEntry = Number(thisPromptBits.length - 1);
+        // 创建一个对象来存储提示词生成过程中的各种组件和元数据
+        // 包含原始提示词、消息ID、锚点文本、注入的内容、各种提示词字符串等信息
+        // 这些信息用于令牌计数和提示词的详细分析
         let additionalPromptStuff = {
+            // 继承当前数组条目的所有属性
             ...thisPromptBits[currentArrayEntry],
+            // 原始提示词或输入
             rawPrompt: generate_data.prompt || generate_data.input,
+            // 获取下一个消息ID
             mesId: getNextMessageId(type),
+            // 获取所有扩展提示词
             allAnchors: getAllExtensionPrompts(),
+            // 获取注入的聊天内容
             chatInjects: injectedIndices?.map(index => arrMes[arrMes.length - index - 1])?.join('') || '',
+            // 记忆总结字符串
             summarizeString: (extension_prompts['1_memory']?.value || ''),
+            // 作者注释字符串
             authorsNoteString: (extension_prompts['2_floating_prompt']?.value || ''),
+            // 智能上下文字符串
             smartContextString: (extension_prompts['chromadb']?.value || ''),
+            // 聊天向量字符串
             chatVectorsString: (extension_prompts['3_vectors']?.value || ''),
+            // 数据库向量字符串
             dataBankVectorsString: (extension_prompts['4_vectors_data_bank']?.value || ''),
+            // 世界信息字符串
             worldInfoString: worldInfoString,
+            // 故事字符串
             storyString: storyString,
+            // 场景前锚点
             beforeScenarioAnchor: beforeScenarioAnchor,
+            // 场景后锚点
             afterScenarioAnchor: afterScenarioAnchor,
+            // 示例字符串
             examplesString: examplesString,
+            // 发送消息字符串
             mesSendString: mesSendString,
+            // 生成的提示词缓存
             generatedPromptCache: generatedPromptCache,
+            // 提示词偏置
             promptBias: promptBias,
+            // 最终提示词
             finalPrompt: finalPrompt,
+            // 角色描述
             charDescription: description,
+            // 角色性格
             charPersonality: personality,
+            // 场景文本
             scenarioText: scenario,
+            // 最大上下文长度
             this_max_context: this_max_context,
+            // 令牌填充
             padding: power_user.token_padding,
+            // 主要API
             main_api: main_api,
+            // 系统指令(非OpenAI API且启用系统提示时)
             instruction: main_api !== 'openai' && power_user.sysprompt.enabled ? substituteParams(power_user.prefer_character_prompt && system ? system : power_user.sysprompt.content) : '',
+            // 用户角色(仅当角色描述位置在提示词中时)
             userPersona: (power_user.persona_description_position == persona_description_positions.IN_PROMPT ? (persona || '') : ''),
+            // 分词器名称
             tokenizer: getFriendlyTokenizerName(main_api).tokenizerName || '',
         };
 
@@ -4827,6 +5095,14 @@ export function triggerAutoContinue(messageChunk, isImpersonate) {
     }
 }
 
+
+
+/**
+ * 获取偏见字符串，包括消息偏见和提示偏见。
+ * @param {string} textareaText - 当前文本区域的内容。
+ * @param {string} type - 生成类型，用于确定偏见的来源。
+ * @returns {{ messageBias: string, promptBias: string, isUserPromptBias: boolean }} - 返回包含消息偏见、提示偏见和用户提示偏见标志的对象。
+ */
 export function getBiasStrings(textareaText, type) {
     if (type == 'impersonate' || type == 'continue') {
         return { messageBias: '', promptBias: '', isUserPromptBias: false };
@@ -4892,14 +5168,15 @@ export function removeMacros(str) {
 }
 
 /**
- * Inserts a user message into the chat history.
- * @param {string} messageText Message text.
- * @param {string} messageBias Message bias.
- * @param {number} [insertAt] Optional index to insert the message at.
- * @param {boolean} [compact] Send as a compact display message.
- * @param {string} [name] Name of the user sending the message. Defaults to name1.
- * @param {string} [avatar] Avatar of the user sending the message. Defaults to user_avatar.
- * @returns {Promise<any>} A promise that resolves to the message when it is inserted.
+ * 将用户消息插入到聊天历史记录中。
+ *
+ * @param {string} messageText 消息文本内容
+ * @param {string} messageBias 消息偏好设置,用于影响AI的回复
+ * @param {number} [insertAt] 可选的插入位置索引。如果提供,消息将插入到指定位置;否则追加到末尾
+ * @param {boolean} [compact] 是否以紧凑模式显示消息。true表示使用较小的系统消息样式
+ * @param {string} [name] 发送消息的用户名称。默认使用name1(当前用户名)
+ * @param {string} [avatar] 发送消息的用户头像。默认使用user_avatar(当前用户头像)
+ * @returns {Promise<any>} 返回一个Promise,在消息插入完成时解析为该消息对象
  */
 export async function sendMessageAsUser(messageText, messageBias, insertAt = null, compact = false, name = name1, avatar = user_avatar) {
     messageText = getRegexedString(messageText, regex_placement.USER_INPUT);
@@ -4994,6 +5271,11 @@ export function getMaxContextSize(overrideResponseLength = null) {
     return this_max_context;
 }
 
+/**
+ * 解析令牌计数并将其添加到 thisPromptBits 数组中
+ * @param {Object} counts - 包含不同类型令牌计数的对象
+ * @param {Array} thisPromptBits - 存储解析后令牌计数的数组
+ */
 function parseTokenCounts(counts, thisPromptBits) {
     /**
      * @param {any[]} numbers
@@ -5018,6 +5300,12 @@ function parseTokenCounts(counts, thisPromptBits) {
     });
 }
 
+/**
+ * 为聊天内容添加前导文本
+ * 如果使用Novel AI,会在消息前添加预设的前导文本
+ * @param {string} mesSendString - 要添加前导文本的消息字符串
+ * @returns {string} 添加了前导文本的消息字符串
+ */
 function addChatsPreamble(mesSendString) {
     return main_api === 'novel'
         ? substituteParams(nai_settings.preamble) + '\n' + mesSendString
@@ -5275,6 +5563,11 @@ async function promptItemize(itemizedPrompts, requestedMesId) {
     await popup.show();
 }
 
+/**
+ * 设置上下文消息
+ * @param {number} lastmsg 最后一条消息的索引
+ * @param {string} type 消息类型，可以是'swipe'、'regenerate'或'continue'
+ */
 function setInContextMessages(lastmsg, type) {
     $('#chat .mes').removeClass('lastInContext');
 
@@ -5324,10 +5617,10 @@ export async function sendGenerationRequest(type, data) {
 }
 
 /**
- * Sends a streaming request to the API.
- * @param {string} type Generation type
- * @param {object} data Generation data
- * @returns {Promise<any>} Streaming generator
+ * 向API发送流式请求
+ * @param {string} type 生成类型
+ * @param {object} data 生成数据
+ * @returns {Promise<any>} 流式生成器
  */
 export async function sendStreamingRequest(type, data) {
     if (abortController?.signal?.aborted) {
@@ -7399,13 +7692,13 @@ function select_rm_characters() {
 }
 
 /**
- * Sets a prompt injection to insert custom text into any outgoing prompt. For use in UI extensions.
- * @param {string} key Prompt injection id.
- * @param {string} value Prompt injection value.
- * @param {number} position Insertion position. 0 is after story string, 1 is in-chat with custom depth.
- * @param {number} depth Insertion depth. 0 represets the last message in context. Expected values up to MAX_INJECTION_DEPTH.
- * @param {number} role Extension prompt role. Defaults to SYSTEM.
- * @param {boolean} scan Should the prompt be included in the world info scan.
+ * 在任何外发提示中插入自定义文本的提示注入设置。用于UI扩展。
+ * @param {string} key 提示注入的标识符。
+ * @param {string} value 提示注入的值。
+ * @param {number} position 插入位置。0表示在故事字符串之后，1表示在聊天中具有自定义深度。
+ * @param {number} depth 插入深度。0表示上下文中的最后一条消息。预期值最高为MAX_INJECTION_DEPTH。
+ * @param {number} role 扩展提示的角色。默认为SYSTEM。
+ * @param {boolean} scan 是否应将提示包含在世界信息扫描中。
  */
 export function setExtensionPrompt(key, value, position, depth, scan = false, role = extension_prompt_roles.SYSTEM) {
     extension_prompts[key] = {
@@ -7442,8 +7735,8 @@ export function getExtensionPromptRoleByName(roleName) {
 }
 
 /**
- * Removes all char A/N prompt injections from the chat.
- * To clean up when switching from groups to solo and vice versa.
+ * 从聊天中移除所有字符A/N提示注入。
+ * 在从群组切换到单独聊天或反之时进行清理。
  */
 export function removeDepthPrompts() {
     for (const key of Object.keys(extension_prompts)) {
@@ -8184,97 +8477,98 @@ async function createOrEditCharacter(e) {
 
 window['SillyTavern'].getContext = function () {
     return {
-        chat: chat,
-        characters: characters,
-        groups: groups,
-        name1: name1,
-        name2: name2,
-        characterId: this_chid,
-        groupId: selected_group,
+        // 这里定义了一个对象，包含了多个属性和方法，用于获取当前的上下文信息
+        chat: chat, // 当前的聊天内容
+        characters: characters, // 当前的角色信息
+        groups: groups, // 当前的群组信息
+        name1: name1, // 名称1
+        name2: name2, // 名称2
+        characterId: this_chid, // 当前角色的ID
+        groupId: selected_group, // 当前选择的群组ID
         chatId: selected_group
-            ? groups.find(x => x.id == selected_group)?.chat_id
-            : (this_chid && characters[this_chid] && characters[this_chid].chat),
-        getCurrentChatId: getCurrentChatId,
-        getRequestHeaders: getRequestHeaders,
-        reloadCurrentChat: reloadCurrentChat,
-        renameChat: renameChat,
-        saveSettingsDebounced: saveSettingsDebounced,
-        onlineStatus: online_status,
-        maxContext: Number(max_context),
-        chatMetadata: chat_metadata,
-        streamingProcessor,
-        eventSource: eventSource,
-        eventTypes: event_types,
-        addOneMessage: addOneMessage,
-        generate: Generate,
-        sendStreamingRequest: sendStreamingRequest,
-        sendGenerationRequest: sendGenerationRequest,
-        stopGeneration: stopGeneration,
-        getTokenCount: getTokenCount,
-        extensionPrompts: extension_prompts,
-        setExtensionPrompt: setExtensionPrompt,
-        updateChatMetadata: updateChatMetadata,
-        saveChat: saveChatConditional,
-        openCharacterChat: openCharacterChat,
-        openGroupChat: openGroupChat,
-        saveMetadata: saveMetadata,
-        sendSystemMessage: sendSystemMessage,
-        activateSendButtons,
-        deactivateSendButtons,
-        saveReply,
-        substituteParams,
-        substituteParamsExtended,
-        SlashCommandParser,
-        SlashCommand,
-        SlashCommandArgument,
-        SlashCommandNamedArgument,
-        ARGUMENT_TYPE,
-        executeSlashCommandsWithOptions,
+            ? groups.find(x => x.id == selected_group)?.chat_id // 如果选择了群组，获取群组的聊天ID
+            : (this_chid && characters[this_chid] && characters[this_chid].chat), // 否则获取当前角色的聊天ID
+        getCurrentChatId: getCurrentChatId, // 获取当前聊天ID的方法
+        getRequestHeaders: getRequestHeaders, // 获取请求头的方法
+        reloadCurrentChat: reloadCurrentChat, // 重新加载当前聊天的方法
+        renameChat: renameChat, // 重命名聊天的方法
+        saveSettingsDebounced: saveSettingsDebounced, // 保存设置的方法
+        onlineStatus: online_status, // 在线状态
+        maxContext: Number(max_context), // 最大上下文大小
+        chatMetadata: chat_metadata, // 聊天元数据
+        streamingProcessor, // 流媒体处理器
+        eventSource: eventSource, // 事件源
+        eventTypes: event_types, // 事件类型
+        addOneMessage: addOneMessage, // 添加一条消息的方法
+        generate: Generate, // 生成方法
+        sendStreamingRequest: sendStreamingRequest, // 发送流媒体请求的方法
+        sendGenerationRequest: sendGenerationRequest, // 发送生成请求的方法
+        stopGeneration: stopGeneration, // 停止生成的方法
+        getTokenCount: getTokenCount, // 获取令牌数量的方法
+        extensionPrompts: extension_prompts, // 扩展提示 **!!拼接的提示词在这里**
+        setExtensionPrompt: setExtensionPrompt, // 设置扩展提示的方法
+        updateChatMetadata: updateChatMetadata, // 更新聊天元数据的方法
+        saveChat: saveChatConditional, // 保存聊天的方法
+        openCharacterChat: openCharacterChat, // 打开角色聊天的方法
+        openGroupChat: openGroupChat, // 打开群组聊天的方法
+        saveMetadata: saveMetadata, // 保存元数据的方法
+        sendSystemMessage: sendSystemMessage, // 发送系统消息的方法
+        activateSendButtons, // 激活发送按钮的方法
+        deactivateSendButtons, // 取消激活发送按钮的方法
+        saveReply, // 保存回复的方法
+        substituteParams, // 替换参数的方法
+        substituteParamsExtended, // 扩展替换参数的方法
+        SlashCommandParser, // 斜杠命令解析器
+        SlashCommand, // 斜杠命令
+        SlashCommandArgument, // 斜杠命令参数
+        SlashCommandNamedArgument, // 斜杠命名参数
+        ARGUMENT_TYPE, // 参数类型
+        executeSlashCommandsWithOptions, // 执行带选项的斜杠命令的方法
         /** @deprecated Use SlashCommandParser.addCommandObject() instead */
-        registerSlashCommand: registerSlashCommand,
+        registerSlashCommand: registerSlashCommand, // 注册斜杠命令的方法（已弃用）
         /** @deprecated Use executeSlashCommandWithOptions instead */
-        executeSlashCommands: executeSlashCommands,
-        timestampToMoment: timestampToMoment,
+        executeSlashCommands: executeSlashCommands, // 执行斜杠命令的方法（已弃用）
+        timestampToMoment: timestampToMoment, // 时间戳转换为时刻的方法
         /** @deprecated Handlebars for extensions are no longer supported. */
-        registerHelper: () => { },
-        registerMacro: MacrosParser.registerMacro.bind(MacrosParser),
-        unregisterMacro: MacrosParser.unregisterMacro.bind(MacrosParser),
-        registerFunctionTool: ToolManager.registerFunctionTool.bind(ToolManager),
-        unregisterFunctionTool: ToolManager.unregisterFunctionTool.bind(ToolManager),
-        isToolCallingSupported: ToolManager.isToolCallingSupported.bind(ToolManager),
-        canPerformToolCalls: ToolManager.canPerformToolCalls.bind(ToolManager),
-        registerDebugFunction: registerDebugFunction,
+        registerHelper: () => { }, // 注册助手的方法（已弃用）
+        registerMacro: MacrosParser.registerMacro.bind(MacrosParser), // 注册宏的方法
+        unregisterMacro: MacrosParser.unregisterMacro.bind(MacrosParser), // 取消注册宏的方法
+        registerFunctionTool: ToolManager.registerFunctionTool.bind(ToolManager), // 注册功能工具的方法
+        unregisterFunctionTool: ToolManager.unregisterFunctionTool.bind(ToolManager), // 取消注册功能工具的方法
+        isToolCallingSupported: ToolManager.isToolCallingSupported.bind(ToolManager), // 检查是否支持工具调用的方法
+        canPerformToolCalls: ToolManager.canPerformToolCalls.bind(ToolManager), // 检查是否可以执行工具调用的方法
+        registerDebugFunction: registerDebugFunction, // 注册调试功能的方法
         /** @deprecated Use renderExtensionTemplateAsync instead. */
-        renderExtensionTemplate: renderExtensionTemplate,
-        renderExtensionTemplateAsync: renderExtensionTemplateAsync,
-        registerDataBankScraper: ScraperManager.registerDataBankScraper,
+        renderExtensionTemplate: renderExtensionTemplate, // 渲染扩展模板的方法（已弃用）
+        renderExtensionTemplateAsync: renderExtensionTemplateAsync, // 异步渲染扩展模板的方法
+        registerDataBankScraper: ScraperManager.registerDataBankScraper, // 注册数据银行爬取器的方法
         /** @deprecated Use callGenericPopup or Popup instead. */
-        callPopup: callPopup,
-        callGenericPopup: callGenericPopup,
-        showLoader: showLoader,
-        hideLoader: hideLoader,
-        mainApi: main_api,
-        extensionSettings: extension_settings,
-        ModuleWorkerWrapper: ModuleWorkerWrapper,
-        getTokenizerModel: getTokenizerModel,
-        generateQuietPrompt: generateQuietPrompt,
-        writeExtensionField: writeExtensionField,
-        getThumbnailUrl: getThumbnailUrl,
-        selectCharacterById: selectCharacterById,
-        messageFormatting: messageFormatting,
-        shouldSendOnEnter: shouldSendOnEnter,
-        isMobile: isMobile,
-        t: t,
-        translate: translate,
-        tags: tags,
-        tagMap: tag_map,
-        menuType: menu_type,
-        createCharacterData: create_save,
+        callPopup: callPopup, // 调用弹出窗口的方法（已弃用）
+        callGenericPopup: callGenericPopup, // 调用通用弹出窗口的方法
+        showLoader: showLoader, // 显示加载器的方法
+        hideLoader: hideLoader, // 隐藏加载器的方法
+        mainApi: main_api, // 主API
+        extensionSettings: extension_settings, // 扩展设置
+        ModuleWorkerWrapper: ModuleWorkerWrapper, // 模块工作器包装器
+        getTokenizerModel: getTokenizerModel, // 获取分词模型的方法
+        generateQuietPrompt: generateQuietPrompt, // 生成安静提示的方法
+        writeExtensionField: writeExtensionField, // 写入扩展字段的方法
+        getThumbnailUrl: getThumbnailUrl, // 获取缩略图URL的方法
+        selectCharacterById: selectCharacterById, // 通过ID选择角色的方法
+        messageFormatting: messageFormatting, // 消息格式化的方法
+        shouldSendOnEnter: shouldSendOnEnter, // 检查是否在按下回车键时发送消息的方法
+        isMobile: isMobile, // 检查是否为移动设备的方法
+        t: t, // 翻译方法
+        translate: translate, // 翻译方法
+        tags: tags, // 标签
+        tagMap: tag_map, // 标签映射
+        menuType: menu_type, // 菜单类型
+        createCharacterData: create_save, // 创建角色数据的方法
         /** @deprecated Legacy snake-case naming, compatibility with old extensions */
-        event_types: event_types,
-        Popup: Popup,
-        POPUP_TYPE: POPUP_TYPE,
-        POPUP_RESULT: POPUP_RESULT,
+        event_types: event_types, // 事件类型（旧版）
+        Popup: Popup, // 弹出窗口
+        POPUP_TYPE: POPUP_TYPE, // 弹出窗口类型
+        POPUP_RESULT: POPUP_RESULT, // 弹出窗口结果
     };
 };
 
@@ -9169,6 +9463,8 @@ async function removeCharacterFromUI() {
     saveSettingsDebounced();
 }
 
+// Start of Selection
+// 新助手聊天的异步函数
 async function newAssistantChat() {
     await clearChat();
     chat.splice(0, chat.length);

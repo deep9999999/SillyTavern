@@ -1,3 +1,26 @@
+/**
+ * 作者注释(Author's Note)模块
+ *
+ * 主要功能:
+ * 1. 允许用户为角色对话添加浮动提示/注释
+ * 2. 可以设置提示的显示间隔、深度和位置
+ * 3. 支持角色专属注释和全局默认注释
+ * 4. 提供命令接口用于动态修改注释内容
+ *
+ * 关键组件:
+ * - MODULE_NAME: 模块标识符
+ * - metadata_keys: 存储注释相关的元数据键值
+ * - shouldWIAddPrompt: 控制是否添加提示的标志
+ * - chara_note_position: 定义注释插入位置的枚举
+ *
+ * 主要方法:
+ * - setNoteTextCommand: 设置注释文本
+ * - setNoteDepthCommand: 设置注释深度
+ * - setFloatingPrompt: 处理浮动提示的添加
+ */
+
+
+
 import {
     animation_duration,
     chat_metadata,
@@ -286,6 +309,17 @@ function loadSettings() {
     $(`input[name="extension_default_position"][value="${extension_settings.note.defaultPosition}"]`).prop('checked', true);
 }
 
+/**
+ * 设置浮动提示/注释
+ *
+ * 该函数负责处理作者注释的添加逻辑:
+ * 1. 检查当前是否在聊天中,如果不在则跳过
+ * 2. 根据用户消息数量和设定的间隔,决定是否需要添加注释
+ * 3. 处理角色专属注释和全局默认注释的组合
+ * 4. 根据位置设置(前置/后置)组织最终的注释文本
+ *
+ * @returns {void}
+ */
 export function setFloatingPrompt() {
     const context = getContext();
     if (!context.groupId && context.characterId === undefined) {

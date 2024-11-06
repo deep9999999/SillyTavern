@@ -507,8 +507,8 @@ export class ToolManager {
     }
 
     /**
-     * Checks if tool calling is supported for the current settings and generation type.
-     * @returns {boolean} Whether tool calling is supported for the given type
+     * 检查当前设置和生成类型是否支持工具调用功能。
+     * @returns {boolean} 返回是否支持工具调用功能
      */
     static isToolCallingSupported() {
         if (main_api !== 'openai' || !oai_settings.function_calling) {

@@ -1,3 +1,14 @@
+/**
+ * 这个模块负责处理用户的头像和角色（persona）相关的功能。
+ * 它包括设置默认角色、更新用户锁定图标、备份角色等功能。
+ * 主要函数包括：
+ * - setChatLockedPersona: 设置聊天的锁定角色。
+ * - updateUserLockIcon: 更新用户锁定图标。
+ * - onBackupPersonas: 备份当前的角色信息。
+ * 该模块还处理角色的通知显示和用户头像的加载。
+ */
+
+
 import {
     characters,
     chat,
@@ -850,6 +861,14 @@ function updateUserLockIcon() {
     $('#lock_user_name').toggleClass('fa-lock', hasLock);
 }
 
+/**
+ * 这个异步函数用于设置聊天的锁定角色。
+ * 它首先检查聊天元数据中是否存在锁定的角色，如果存在则使用该角色。
+ * 如果没有锁定角色，则检查是否设置了默认角色，如果设置了则使用默认角色。
+ * 如果没有设置任何角色，则使用当前的用户设置。
+ * 然后，它会查找用户头像文件，如果找不到对应的头像文件，则会解锁角色或清除默认角色。
+ * 最后，如果找到了对应的头像文件，则会选择该头像并更新锁定图标。
+ */
 async function setChatLockedPersona() {
     // Define a persona for this chat
     let chatPersona = '';

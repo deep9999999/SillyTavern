@@ -1,3 +1,46 @@
+/**
+ * 提示管理器模块
+ * 用于管理和处理聊天提示词相关的功能
+ */
+
+/**
+ * 防抖函数,将多次调用合并为一次
+ * @param {Function} func - 需要防抖的函数
+ * @param {number} delay - 延迟时间(毫秒)
+ * @returns {Promise} 返回一个Promise对象
+ */
+
+/**
+ * 默认的提示词深度
+ * @constant {number}
+ */
+
+/**
+ * 提示词注入位置枚举
+ * @enum {number}
+ * RELATIVE - 相对位置
+ * ABSOLUTE - 绝对位置
+ */
+
+/**
+ * 注册提示管理器的迁移功能
+ * 当设置加载或OpenAI预设加载时执行迁移
+ */
+
+/**
+ * 执行迁移
+ * @param {Object} settings - 设置对象
+ * @param {Function|null} savePreset - 保存预设的函数
+ * @param {string|null} presetName - 预设名称
+ */
+
+/**
+ * 查找指定标识符的提示词
+ * @param {string} identifier - 提示词标识符
+ * @returns {Object|undefined} 返回找到的提示词对象
+ */
+
+
 'use strict';
 
 import { event_types, eventSource, is_send_press, main_api, substituteParams } from '../script.js';
@@ -714,6 +757,7 @@ class PromptManager {
      * Main rendering function
      *
      * @param afterTryGenerate - Whether a dry run should be attempted before rendering
+     * @param afterTryGenerate - 是否在渲染前尝试进行预运行
      */
     render(afterTryGenerate = true) {
         if (main_api !== 'openai') return;

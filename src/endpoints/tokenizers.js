@@ -1,3 +1,15 @@
+/**
+ * 该模块主要负责文本的分词处理，支持多种分词器，包括GPT Tokenizer、Claude Tokenizer、LLaMA Tokenizer和Sentencepiece。
+ * 功能包括：
+ * 1. 文本编码：将输入文本转换为模型可以理解的格式。
+ * 2. 分词器缓存：通过缓存机制提高分词效率，避免重复创建分词器实例。
+ * 3. 支持多种文本生成模型的分词需求，确保与不同API的兼容性。
+ * 4. 提供与其他模块的集成能力，例如与提示转换器和常量管理模块的交互。
+ *
+ * 该模块的设计旨在提高文本处理的灵活性和效率，适应不同的应用场景和需求。
+ */
+
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';

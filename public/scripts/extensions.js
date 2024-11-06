@@ -833,10 +833,10 @@ export async function installExtension(url) {
 }
 
 /**
- * Loads extension settings from the app settings.
- * @param {object} settings App Settings
- * @param {boolean} versionChanged Is this a version change?
- * @param {boolean} enableAutoUpdate Enable auto-update
+ * 从应用程序设置加载扩展设置。
+ * @param {object} settings 应用程序设置
+ * @param {boolean} versionChanged 是否是版本更改？
+ * @param {boolean} enableAutoUpdate 启用自动更新
  */
 async function loadExtensionSettings(settings, versionChanged, enableAutoUpdate) {
     if (settings.extension_settings) {
@@ -940,10 +940,10 @@ async function autoUpdateExtensions(forceAll) {
 }
 
 /**
- * Runs the generate interceptors for all extensions.
- * @param {any[]} chat Chat array
- * @param {number} contextSize Context size
- * @returns {Promise<boolean>} True if generation should be aborted
+ * 为所有扩展运行生成拦截器。
+ * @param {any[]} chat 聊天数组
+ * @param {number} contextSize 上下文大小
+ * @returns {Promise<boolean>} 如果生成应该被中止则返回true
  */
 async function runGenerationInterceptors(chat, contextSize) {
     let aborted = false;

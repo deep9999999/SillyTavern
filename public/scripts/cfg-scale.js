@@ -1,3 +1,11 @@
+/**
+ * 这个文件主要用于处理CFG（Classifier-Free Guidance）相关的功能。
+ * 它包括获取和设置CFG引导比例、负面提示和正面提示的功能。
+ * 还包括处理聊天和角色的CFG值的功能。
+ * 该文件还定义了一些常量和辅助函数，用于处理元数据和设置的保存。
+ */
+
+
 import {
     chat_metadata,
     substituteParams,
